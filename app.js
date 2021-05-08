@@ -1,5 +1,6 @@
-const MyExpress = require('./src/lib/my-express');
+const MyExpress = require('./lib/my-express');
 
 var app = MyExpress.createServer();
 
 app.listen(8000);
+
