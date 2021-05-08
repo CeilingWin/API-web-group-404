@@ -1,0 +1,25 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "backend api btl cn web team 404",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CeilingWin/API-web-group-404.git"
+  },
+  "keywords": [
+    "ceilingwin"
+  ],
+  "author": "ceilingwin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CeilingWin/API-web-group-404/issues"
+  },
+  "homepage": "https://github.com/CeilingWin/API-web-group-404#readme",
+  "dependencies": {
+    "jsonwebtoken": "^8.5.1"
+  }
+}
