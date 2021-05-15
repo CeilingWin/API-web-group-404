@@ -1,0 +1,20 @@
+{
+    "server" : {
+        "port": 3000
+    },
+
+    "db" :{
+        "host": "localhost",
+        "port": 8889,
+        "user": "root",
+        "password": "root",
+        "database": "cn_web_404",
+        "charset": "utf8_general_ci",
+        "connectionLimit": 10
+    },
+
+    "token":{
+        "secret_key": "ceiling_win",
+        "exp" : 60
+    }
+}
