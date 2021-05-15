@@ -4,5 +4,6 @@ const auth = require('../middleware/Auth');
 
 var authRouter = module.exports = new Router();
 
-authRouter.post('/',authController.login);
+authRouter.post('/signin',authController.signIn);
+authRouter.post('/signup',authController.signUp);
 

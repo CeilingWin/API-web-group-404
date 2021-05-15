@@ -15,6 +15,6 @@
 
     "token":{
         "secret_key": "ceiling_win",
-        "exp" : 60
+        "exp" : 10000
     }
 }

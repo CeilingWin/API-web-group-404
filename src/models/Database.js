@@ -24,6 +24,14 @@ var db = module.exports = {
                 else resolve(result);
             });
         });
+    },
+
+    escape: function(str){
+        return this.connection.escape(str,true);
+    },
+
+    escapeId: function(str){
+        return this.connection.escapeId(str);
     }
 }
 
