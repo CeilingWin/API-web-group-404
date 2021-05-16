@@ -41,6 +41,11 @@ class Model{
         let sql = `UPDATE ${this.modelName} SET ${sets} WHERE id= ?`;
         return (await this.db.query(sql,[id])).changedRows === 1;
     }
+
+    async  deleteById(id){
+        let result = await this.db.query(`DELETE FROM ?? WHERE id = ?`,[this.modelName,id]);
+        return result.affectedRows===1;
+    }
 }
 
 module.exports = Model;

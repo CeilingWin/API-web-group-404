@@ -1,51 +1,53 @@
 const ProductModel = require('../models/ProductModel');
+const UserModel = require('../models/UserModel');
 
 const productModel = new ProductModel();
+const userModel = new UserModel();
 var productController = module.exports = {
-    getDetail: async function(req,res){
+    getDetail: async function (req, res) {
         let productId = req.params.productID;
         if (!productId || Number.isNaN(Number(productId))) return res.status(400).send('Invalid product ID');
         let product = await productModel.findById(productId);
         if (product)
             res.status(200).send(product);
-        else 
+        else
             res.status(400).send('Product ID not found');
     },
 
-    getType: async function(req,res){
-        let {type,page,limit,sortBy,order} = req.query;
+    getType: async function (req, res) {
+        let { type, page, limit, sortBy, order } = req.query;
         if (!type) type = 'all';
         page = Number(page);
         limit = Number(limit);
         console.log(req.query);
         if (Number.isNaN(page) || Number.isNaN(limit)) return res.status(400).send('Page and limit param require number');
         try {
-            let listProduct = await productModel.getType(type,page,limit,sortBy,order);
+            let listProduct = await productModel.getType(type, page, limit, sortBy, order);
             res.status(200).send(listProduct);
-        } catch(error){
+        } catch (error) {
             res.status(400).send(error.message);
         }
     },
 
-    search: async function(req,res){
-        let {name,type,limit} = req.query;
+    search: async function (req, res) {
+        let { name, type, limit } = req.query;
         if (!name) return res.status(400).send('Invalid search param');
         if (limit === undefined || limit === null) limit = 10;
         limit = Number(limit);
         if (Number.isNaN(limit)) return res.status(400).send('Limit param require number');
         if (!type) type = 'all';
         try {
-            return res.status(200).send(await productModel.searchByName(name,type,limit));
+            return res.status(200).send(await productModel.searchByName(name, type, limit));
         } catch (error) {
             res.status(400).send(error.message);
         }
     },
 
-    addProduct: async function(req,res){
+    addProduct: async function (req, res) {
         let userID = req.user.id;
-        let {name,type,price,quantity,imgUrl,description} = req.body;
+        let { name, type, price, quantity, imgUrl, description } = req.body;
         if (!(name && type && price && quantity && imgUrl && description)) res.status(400).send('Bad request');
-        
+
         let product = {
             name: name,
             type: type,
@@ -63,6 +65,50 @@ var productController = module.exports = {
         } catch (error) {
             res.status(400).send(error.message);
         }
-        
+    },
+
+    delete: async function (req, res) {
+        let productId = req.query.id;
+        let userId = req.user.id;
+        let isAdmin = req.user.isAdmin;
+        if (!productId) res.status(400).send('Require product id');
+        try {
+            let product = await productModel.findById(productId);
+            if (!product) return res.status(400).send('Product ' + productId + ' does not exist');
+            if (product.userID === userId || isAdmin) {
+                if (await productModel.deleteById(productId)) {
+                    res.status(200).send('Delete product success');
+                } else {
+                    res.status(400).send('Delete product failed');
+                }
+            }
+            else return res.status(403).send('You do not have permission to delete this product');
+        } catch (error) {
+            res.status(400).send(error.message);
+        }
+    },
+
+    updateProduct: async function (req, res) {
+        let userId = req.user.id;
+        let productId = req.params.productID;
+        let newData = req.body;
+        if (!productId) return res.status(400).send('Invalid product id');
+
+        try {
+            let product = await productModel.findById(productId);
+            if (!product) return res.status(400).send('Product ' + productId + ' does not exist');
+            if (product.userID === userId) {
+                if (await productModel.update(productId, newData)) {
+                    return res.status(200).send('Update product success');
+                } else {
+                    return res.status(400).send('Update product failed');
+                }
+            } else {
+                return res.status(403).send('You do not have permission to update this product');
+            }
+        } catch (error) {
+            res.status(400).send(error.message);
+        }
+
     }
 }
