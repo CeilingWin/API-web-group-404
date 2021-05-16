@@ -17,17 +17,16 @@ class Model{
     }
 
     async save(model){
-        let listColumnName = this.columnsName;
+        let listColumnName = [];
         let listValues = [];
-        for (let index = 0; index < listColumnName.length; index++) {
-            const columnName = listColumnName[index];
+        for (let index = 0; index < this.columnsName.length; index++) {
+            const columnName = this.columnsName[index];
             listColumnName[index] = this.db.escapeId(columnName); 
             listValues.push(this.db.escape(model[columnName]));
         }
         let columnName = listColumnName.join(',');
         let values = listValues.join(',');
         let sql = `INSERT INTO ${this.modelName} (${columnName}) VALUES (${values})`;
-        console.log(sql);
         return (await this.db.query(sql)).affectedRows == 1;
     }
 
@@ -40,7 +39,6 @@ class Model{
         }
         sets = sets.join(',');
         let sql = `UPDATE ${this.modelName} SET ${sets} WHERE id= ?`;
-        console.log(sql);
         return (await this.db.query(sql,[id])).changedRows === 1;
     }
 }

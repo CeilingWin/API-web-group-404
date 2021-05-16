@@ -42,10 +42,27 @@ var productController = module.exports = {
     },
 
     addProduct: async function(req,res){
-        let user = req.user;
+        let userID = req.user.id;
         let {name,type,price,quantity,imgUrl,description} = req.body;
         if (!(name && type && price && quantity && imgUrl && description)) res.status(400).send('Bad request');
-        // TODO: handle add product
+        
+        let product = {
+            name: name,
+            type: type,
+            price: price,
+            quantity: quantity,
+            imgUrl: imgUrl,
+            description: description,
+            userID: userID
+        }
+
+        try {
+            if (await productModel.save(product)) res.status(200).send('Add product success');
+            else res.status(400).send('Add product failed');
+            console.log("Add product ", product);
+        } catch (error) {
+            res.status(400).send(error.message);
+        }
         
     }
 }
