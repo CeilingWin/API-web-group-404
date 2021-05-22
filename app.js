@@ -7,29 +7,18 @@ const auth = require('./src/middleware/Auth');
 const authRouter = require('./src/routers/AuthRouter');
 const productRouter = require('./src/routers/ProductRouter');
 const billRouter = require('./src/routers/BillRouter');
-// test
-const ProductModel = require('./src/models/ProductModel');
-const UserModel = require('./src/models/UserModel');
-let {isEmail} = require('./src/utils/StringUtil');
 
 var app = express();
+
+// middleware
 app.use(express.json());
+
+//router
 app.use('/',authRouter);
 app.use('/product',productRouter);
 app.use('/bill',billRouter);
-app.post('/',auth,(req,res)=>{
-    console.log("new connect");
-    res.send(req.user);
-});
 
+// start
 app.listen(port,()=>{
     console.log("Server is running on port "+port);
 });
-
-var test = async ()=>{
-    let pm = new ProductModel(); 
-    let result = await pm.getType('pc');
-    console.log(result);
-}
-
-// test();
