@@ -62,8 +62,8 @@ var BillController = module.exports = {
         let productId = req.params.productID;
         if (!productId) return res.status(400).send('Require productID');
 
-        let bill = await billModel.findBill(userId,productId);
         try {
+            let bill = await billModel.findBill(userId,productId);
             if (bill){
                 let newQuantity = bill.quantity + 1;
                 await billModel.update(bill.id,{quantity:newQuantity});
@@ -81,5 +81,26 @@ var BillController = module.exports = {
         } catch (error) {
             res.status(400).send(error.message);
         }
+    },
+
+    deleteProductFromCart : async function(req,res){
+        let userId = req.user.id;
+        let productId = req.params.productID;
+        if (!productId) return res.status(400).send('Require productID');
+        try {
+            let bill = await billModel.findBill(userId,productId);
+            if (!bill) return res.status(400).send('Unknown bill');
+            let newQuantity = bill.quantity - 1;
+            if (newQuantity === 0){
+                billModel.deleteById(bill.id);
+                res.status(200).send('Delete bill success');
+            } else {
+                billModel.update(bill.id,{quantity: newQuantity});
+                res.status(200).send('Delete product success');
+            }
+        } catch (error) {
+            res.status(400).send(error.message);
+        }
+        
     }
 }

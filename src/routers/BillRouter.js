@@ -11,3 +11,5 @@ billRouter.get('/history',auth,billController.getHistory);
 billRouter.get('/buy',auth,billController.buy);
 
 billRouter.post('/:productID',auth,billController.addProductToCart);
+
+billRouter.delete('/:productID',auth,billController.deleteProductFromCart);
