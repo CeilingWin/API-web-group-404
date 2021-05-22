@@ -6,6 +6,7 @@ var port = config.get('server.port');
 const auth = require('./src/middleware/Auth');
 const authRouter = require('./src/routers/AuthRouter');
 const productRouter = require('./src/routers/ProductRouter');
+const billRouter = require('./src/routers/BillRouter');
 // test
 const ProductModel = require('./src/models/ProductModel');
 const UserModel = require('./src/models/UserModel');
@@ -15,6 +16,7 @@ var app = express();
 app.use(express.json());
 app.use('/',authRouter);
 app.use('/product',productRouter);
+app.use('/bill',billRouter);
 app.post('/',auth,(req,res)=>{
     console.log("new connect");
     res.send(req.user);

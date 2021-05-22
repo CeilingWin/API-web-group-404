@@ -19,7 +19,7 @@ var productController = module.exports = {
         if (!type) type = 'all';
         page = Number(page);
         limit = Number(limit);
-        console.log(req.query);
+        console.log('request search',req.query);
         if (Number.isNaN(page) || Number.isNaN(limit)) return res.status(400).send('Page and limit param require number');
         try {
             let listProduct = await productModel.getType(type, page, limit, sortBy, order);
