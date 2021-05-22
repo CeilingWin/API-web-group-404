@@ -6,7 +6,6 @@ const COLUMN_NAME_TABLE_BILL = [
     'productID',
     'quantity',
     'pay',
-    'created'
 ]
 class UserModel extends Model{
     constructor(){
@@ -34,6 +33,12 @@ class UserModel extends Model{
     async payBill(billId){
         let sql = `UPDATE ?? SET pay = 1 WHERE id = ?`;
         return await this.db.query(sql,[this.modelName,billId]);
+    }
+
+    async findBill(userId,productId){
+        let sql = `SELECT * FROM Bill WHERE userID = ? AND productID = ? AND pay = 0`;
+        let bills = await this.db.query(sql,[userId,productId]);
+        return bills[0];
     }
 }
 

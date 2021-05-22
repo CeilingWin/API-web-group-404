@@ -8,9 +8,7 @@ const COLUMN_NAME_TABLE_PRODUCT = [
     'quantity',
     'userID',
     'imgUrl',
-    'description',
-    'created',
-    'modified'
+    'description'
 ]
 class ProductModel extends Model{
     constructor(){

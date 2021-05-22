@@ -6,9 +6,7 @@ const COLUMN_NAME_TABLE_USER = [
     'fullName',
     'email',
     'password',
-    'isAdmin',
-    'created',
-    'modified'
+    'isAdmin'
 ]
 class UserModel extends Model{
     constructor(){
