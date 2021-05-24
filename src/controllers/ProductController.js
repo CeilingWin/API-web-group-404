@@ -1,8 +1,10 @@
 const ProductModel = require('../models/ProductModel');
 const UserModel = require('../models/UserModel');
+const BillModel = require('../models/BillModel');
 
 const productModel = new ProductModel();
 const userModel = new UserModel();
+const billModel = new BillModel();
 var productController = module.exports = {
     getDetail: async function (req, res) {
         let productId = req.params.productID;
@@ -68,7 +70,8 @@ var productController = module.exports = {
     },
 
     delete: async function (req, res) {
-        let productId = req.query.id;
+        // TODO delete bill before
+        let productId = req.params.productID;
         let userId = req.user.id;
         let isAdmin = req.user.isAdmin;
         if (!productId) res.status(400).send('Require product id');
@@ -76,6 +79,7 @@ var productController = module.exports = {
             let product = await productModel.findById(productId);
             if (!product) return res.status(400).send('Product ' + productId + ' does not exist');
             if (product.userID === userId || isAdmin) {
+                await billModel.deleteAllBillWithProductId(productId);
                 if (await productModel.deleteById(productId)) {
                     res.status(200).send('Delete product success');
                 } else {

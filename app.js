@@ -1,6 +1,8 @@
 const config = require('config');
 const mysql = require('mysql');
 const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 var port = config.get('server.port');
 
 const auth = require('./src/middleware/Auth');
@@ -11,7 +13,19 @@ const billRouter = require('./src/routers/BillRouter');
 var app = express();
 
 // middleware
-app.use(express.json());
+app.use(cors({
+    'allowedHeaders': ['sessionId', 'Content-Type'],
+    'exposedHeaders': ['sessionId'],
+    'origin': '*',
+    'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    'preflightContinue': false
+  }));
+app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.json());
+app.use((req,res,next)=>{
+    res.set('Content-type','application/json');
+    next();
+})
 
 //router
 app.use('/',authRouter);

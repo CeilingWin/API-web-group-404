@@ -40,6 +40,11 @@ class UserModel extends Model{
         let bills = await this.db.query(sql,[userId,productId]);
         return bills[0];
     }
+
+    async deleteAllBillWithProductId(productId){
+        let sql = `DELETE FROM Bill WHERE productID = ?`;
+        await this.db.query(sql,[productId]);
+    }
 }
 
 module.exports = UserModel;

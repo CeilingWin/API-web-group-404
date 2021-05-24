@@ -9,8 +9,8 @@ productRouter.get('/:productID',productController.getDetail);
 
 productRouter.put('/:productID',auth,productController.updateProduct);
 
+productRouter.delete('/:productID',auth,productController.delete);
+
 productRouter.get('/',productController.getType);
 
 productRouter.post('/',auth,productController.addProduct);
-
-productRouter.delete('/',auth,productController.delete);
