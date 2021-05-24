@@ -6,6 +6,7 @@ const cors = require('cors');
 var port = config.get('server.port');
 
 const auth = require('./src/middleware/Auth');
+const userRouter = require('./src/routers/UserRouter');
 const authRouter = require('./src/routers/AuthRouter');
 const productRouter = require('./src/routers/ProductRouter');
 const billRouter = require('./src/routers/BillRouter');
@@ -29,6 +30,7 @@ app.use((req,res,next)=>{
 
 //router
 app.use('/',authRouter);
+app.use('/user',userRouter);
 app.use('/product',productRouter);
 app.use('/bill',billRouter);
 
