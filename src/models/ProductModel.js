@@ -20,7 +20,7 @@ class ProductModel extends Model{
         order  = order === 'asc'? order: 'desc';
         let startIndex = page*limit;
         type = String(type).toLowerCase();
-        let listColumnName = ['id','name','type','price','quantity','imgUrl'];
+        let listColumnName = ['id','name','type','price','quantity','imgUrl','description'];
         if (type !== 'all'){
             return await this.db.query( 'SELECT ?? FROM ?? WHERE type=? ORDER BY ?? '+order+' LIMIT ?,?',
             [listColumnName,this.modelName,type,sortBy,startIndex,limit]);
