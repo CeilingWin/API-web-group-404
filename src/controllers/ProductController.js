@@ -75,12 +75,14 @@ var productController = module.exports = {
         let userId = req.user.id;
         let isAdmin = req.user.isAdmin;
         if (!productId) res.status(400).send('Require product id');
+        console.log("delete ",productId);
         try {
             let product = await productModel.findById(productId);
             if (!product) return res.status(400).send('Product ' + productId + ' does not exist');
             if (product.userID === userId || isAdmin) {
                 await billModel.deleteAllBillWithProductId(productId);
                 if (await productModel.deleteById(productId)) {
+                    console.log("delete success");
                     res.status(200).send('Delete product success');
                 } else {
                     res.status(400).send('Delete product failed');
